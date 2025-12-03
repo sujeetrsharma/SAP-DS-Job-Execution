@@ -1,0 +1,5 @@
+{
+  "name": "SAP DS Job Commander",
+  "description": "A RESTful API client to execute SAP Data Services jobs via natural language or manual configuration, featuring an AI-powered parameter parser.",
+  "requestFramePermissions": []
+}
