@@ -66,7 +66,9 @@ export const executeSapJob = async (
     }
 
     // Construct URL - usually something like /api/v1/jobs/execute
-    const url = `${serverConfig.baseUrl.replace(/\/$/, '')}/jobs/${jobConfig.jobName}/execute`;
+    // Ensure no double slashes if user added trailing slash
+    const baseUrl = serverConfig.baseUrl.replace(/\/$/, '');
+    const url = `${baseUrl}/jobs/${jobConfig.jobName}/execute`;
 
     const response = await fetch(url, {
       method: 'POST',
@@ -77,7 +79,7 @@ export const executeSapJob = async (
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || `HTTP ${response.status}`);
+      throw new Error(data.message || `HTTP ${response.status} - ${response.statusText}`);
     }
 
     logEntry.status = 'Success';
@@ -86,8 +88,16 @@ export const executeSapJob = async (
 
   } catch (error: any) {
     logEntry.status = 'Failed';
-    logEntry.message = error.message || 'Unknown network error';
-    logEntry.responsePayload = { error: error.toString() };
+    const errorMsg = error.message || error.toString();
+    
+    // enhance error message for common CORS/Network issues
+    if (errorMsg === 'Failed to fetch' || errorMsg.includes('NetworkError')) {
+       logEntry.message = 'Network Error (Possible CORS issue). Ensure your SAP server allows requests from this domain.';
+    } else {
+       logEntry.message = errorMsg;
+    }
+    
+    logEntry.responsePayload = { error: errorMsg };
   }
 
   return logEntry;

@@ -36,6 +36,21 @@ To create a static production build for any web server (Apache, Nginx, S3):
    Upload the contents of the `dist/` folder to your web server.
    *Note: Your server must support SPA routing (rewrite all 404s to index.html).*
 
+## ⚠️ Troubleshooting
+
+### 1. "Your connection is not private" (NET::ERR_CERT_COMMON_NAME_INVALID)
+If you see this error on Vercel:
+- **Cause:** The auto-generated deployment URL (e.g., `project-git-branch-user.vercel.app`) is too long for the SSL certificate.
+- **Fix:** Go to your Vercel Project Dashboard and use the **main domain** (e.g., `your-project-name.vercel.app`). It is shorter and will have a valid certificate.
+
+### 2. CORS Errors (Network Error / Failed to Fetch)
+If you try to run a job and it fails immediately:
+- **Cause:** Browsers block requests from one domain (your app) to another (your SAP server) unless the server allows it.
+- **Fix:** 
+    - **Option A (Production):** Configure CORS headers on your SAP/Tomcat server to allow `Origin: https://your-app.vercel.app`.
+    - **Option B (Dev/Testing):** Install a browser extension like "Allow CORS: Access-Control-Allow-Origin" (use only for testing).
+    - **Option C (Proxy):** Set up a small proxy server that forwards requests to SAP.
+
 ## 🛠 Development
 
 ### Prerequisites
@@ -60,5 +75,5 @@ To create a static production build for any web server (Apache, Nginx, S3):
 ## 🔒 Security Note
 
 This is a **client-side** application.
-- Your `API_KEY` is embedded in the browser code. Restrict your API key in Google AI Studio to only allow requests from your deployed domain (e.g., `https://your-app.vercel.app`).
+- Your `API_KEY` is embedded in the browser code. Restrict your API key in Google AI Studio to only allow requests from your deployed domain.
 - SAP DS credentials entered in the settings are stored in `localStorage` for convenience but are never sent anywhere except the configured SAP endpoint. Ensure you use `https://` for your SAP DS server URL.
