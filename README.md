@@ -2,68 +2,63 @@
 
 A RESTful API client to execute SAP Data Services jobs via natural language or manual configuration, featuring an AI-powered parameter parser.
 
-## 🚀 Getting Started
+## 🚀 Deployment
 
-### Prerequisites
+### Option 1: Deploy to Vercel (Fastest)
 
-- [Node.js](https://nodejs.org/) (Version 18 or higher)
-- A Google Gemini API Key ([Get one here](https://aistudio.google.com/))
+This project is pre-configured for Vercel.
 
-### Installation
+1. **Push this code** to a Git repository (GitHub, GitLab, etc.).
+2. Go to [Vercel Dashboard](https://vercel.com/new).
+3. **Import** your repository.
+4. In the "Environment Variables" section, add your API Key:
+   - **Key**: `API_KEY`
+   - **Value**: `your_gemini_api_key_starts_with_AIza...`
+5. Click **Deploy**.
 
-1. **Clone the repository** (if you haven't already):
-   ```bash
-   git clone <your-repo-url>
-   cd sap-ds-job-commander
-   ```
+### Option 2: Build Manually
 
-2. **Install dependencies**:
+To create a static production build for any web server (Apache, Nginx, S3):
+
+1. **Install Dependencies**:
    ```bash
    npm install
    ```
 
-3. **Environment Setup**:
-   Create a file named `.env` in the root directory.
+2. **Build**:
    ```bash
-   touch .env
+   # You must pass the API Key during build time for the client to use it
+   export API_KEY=your_key_here
+   npm run build
    ```
-   
-   Add your API Key to the `.env` file:
+
+3. **Deploy**:
+   Upload the contents of the `dist/` folder to your web server.
+   *Note: Your server must support SPA routing (rewrite all 404s to index.html).*
+
+## 🛠 Development
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (Version 18+)
+- A Google Gemini API Key ([Get one here](https://aistudio.google.com/))
+
+### Running Locally
+
+1. Create a `.env` file:
    ```env
-   API_KEY=your_actual_gemini_api_key_here
+   API_KEY=your_api_key_here
    ```
 
-### 💻 Running Locally
+2. Start the server:
+   ```bash
+   npm run dev
+   ```
 
-Start the development server:
+3. Open `http://localhost:3000`.
 
-```bash
-npm run dev
-```
+## 🔒 Security Note
 
-Open your browser and navigate to `http://localhost:3000`.
-
-### 📦 Building for Production
-
-To create a production-ready build:
-
-```bash
-npm run build
-```
-
-The output will be in the `dist` folder.
-
-## ☁️ Deployment
-
-### Deploy to Vercel (Recommended)
-
-1. Push your code to a Git repository (GitHub, GitLab, Bitbucket).
-2. Go to [Vercel](https://vercel.com) and "Add New > Project".
-3. Select your repository.
-4. In the **Environment Variables** section, add:
-   - Key: `API_KEY`
-   - Value: `your_gemini_api_key`
-5. Click **Deploy**.
-
-### Manual Deployment
-You can deploy the contents of the `dist` folder to any static hosting provider (Netlify, AWS S3, etc.). Ensure your provider supports Single Page Application (SPA) routing (rewriting all requests to index.html).
+This is a **client-side** application.
+- Your `API_KEY` is embedded in the browser code. Restrict your API key in Google AI Studio to only allow requests from your deployed domain (e.g., `https://your-app.vercel.app`).
+- SAP DS credentials entered in the settings are stored in `localStorage` for convenience but are never sent anywhere except the configured SAP endpoint. Ensure you use `https://` for your SAP DS server URL.
