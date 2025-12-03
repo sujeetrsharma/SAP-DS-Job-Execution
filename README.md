@@ -1,20 +1,69 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# SAP DS Job Commander
 
-# Run and deploy your AI Studio app
+A RESTful API client to execute SAP Data Services jobs via natural language or manual configuration, featuring an AI-powered parameter parser.
 
-This contains everything you need to run your app locally.
+## 🚀 Getting Started
 
-View your app in AI Studio: https://ai.studio/apps/drive/17IAiter_ORrlLTvaBdQrYKj50vtBthO7
+### Prerequisites
 
-## Run Locally
+- [Node.js](https://nodejs.org/) (Version 18 or higher)
+- A Google Gemini API Key ([Get one here](https://aistudio.google.com/))
 
-**Prerequisites:**  Node.js
+### Installation
 
+1. **Clone the repository** (if you haven't already):
+   ```bash
+   git clone <your-repo-url>
+   cd sap-ds-job-commander
+   ```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Environment Setup**:
+   Create a file named `.env` in the root directory.
+   ```bash
+   touch .env
+   ```
+   
+   Add your API Key to the `.env` file:
+   ```env
+   API_KEY=your_actual_gemini_api_key_here
+   ```
+
+### 💻 Running Locally
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Open your browser and navigate to `http://localhost:3000`.
+
+### 📦 Building for Production
+
+To create a production-ready build:
+
+```bash
+npm run build
+```
+
+The output will be in the `dist` folder.
+
+## ☁️ Deployment
+
+### Deploy to Vercel (Recommended)
+
+1. Push your code to a Git repository (GitHub, GitLab, Bitbucket).
+2. Go to [Vercel](https://vercel.com) and "Add New > Project".
+3. Select your repository.
+4. In the **Environment Variables** section, add:
+   - Key: `API_KEY`
+   - Value: `your_gemini_api_key`
+5. Click **Deploy**.
+
+### Manual Deployment
+You can deploy the contents of the `dist` folder to any static hosting provider (Netlify, AWS S3, etc.). Ensure your provider supports Single Page Application (SPA) routing (rewriting all requests to index.html).
